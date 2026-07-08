@@ -23,8 +23,8 @@ def main():
         print(f"Output file: {args['output_file']} ({args['output_format'].upper()})")
         print("=" * 50)
         
-        # Read input file (Task 2, Task 4)
-        print(f"\n[Task 2-4] Reading input file...")
+        # Read input file (Task 2, Task 4, Task 6)
+        print(f"\n[Task 2-6] Reading input file...")
         try:
             data = read_file(args['input_file'], args['input_format'])
             format_name = args['input_format'].upper()
@@ -57,9 +57,9 @@ def main():
             return 1
         
         print("\n" + "=" * 50)
-        print("Task 1-5 completed successfully!")
+        print("Task 1-6 completed successfully!")
         print("\nNext tasks will implement:")
-        print("- Task 6-7: Reading/Writing XML files and format verification")
+        print("- Task 7: Writing XML files and format verification")
         print("- Task 8-9: UI implementation")
         
         return 0
