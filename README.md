@@ -59,7 +59,8 @@ python main.py input.xml result.yaml
 - ✅ Task 4: YAML file reading and syntax validation
 - ✅ Task 5: YAML file writing and syntax verification
 - ✅ Task 6: XML file reading and syntax validation
-- 🔄 Task 7-9: To be implemented
+- ✅ Task 7: XML file writing and syntax verification
+- 🔄 Task 8-9: To be implemented
 
 ## How to Run
 
