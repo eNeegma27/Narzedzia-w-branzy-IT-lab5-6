@@ -8,6 +8,7 @@ Converts data between formats: .xml, .json, and .yaml
 import sys
 from arg_parser import parse_arguments, print_usage
 from data_reader import read_file, DataReaderError
+from data_writer import write_file, DataWriterError, validate_json_syntax
 
 
 def main():
@@ -36,12 +37,24 @@ def main():
             print(f"✗ Error reading file: {e}")
             return 1
         
+        # Write output file (Task 3)
+        print(f"\n[Task 3] Writing output file...")
+        try:
+            write_file(args['output_file'], data, args['output_format'])
+            print(f"✓ Successfully wrote data to JSON file")
+            
+            # Verify JSON syntax
+            validate_json_syntax(args['output_file'])
+            print(f"✓ Output JSON syntax verified")
+        except DataWriterError as e:
+            print(f"✗ Error writing file: {e}")
+            return 1
+        
         print("\n" + "=" * 50)
-        print("Task 1-2 completed successfully!")
+        print("Task 1-3 completed successfully!")
         print("\nNext tasks will implement:")
-        print("- Task 3: Converting between formats")
-        print("- Task 4: Writing output to file")
-        print("- Task 5-7: Format verification")
+        print("- Task 4: Reading YAML files")
+        print("- Task 5-7: Reading/Writing XML files and format verification")
         print("- Task 8-9: UI implementation")
         
         return 0
