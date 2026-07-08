@@ -23,11 +23,12 @@ def main():
         print(f"Output file: {args['output_file']} ({args['output_format'].upper()})")
         print("=" * 50)
         
-        # Read input file (Task 2)
-        print(f"\n[Task 2] Reading input file...")
+        # Read input file (Task 2, Task 4)
+        print(f"\n[Task 2-4] Reading input file...")
         try:
             data = read_file(args['input_file'], args['input_format'])
-            print(f"✓ Successfully read JSON file")
+            format_name = args['input_format'].upper()
+            print(f"✓ Successfully read {format_name} file")
             print(f"  Data type: {type(data).__name__}")
             if isinstance(data, dict):
                 print(f"  Keys: {len(data)} keys found")
@@ -51,9 +52,8 @@ def main():
             return 1
         
         print("\n" + "=" * 50)
-        print("Task 1-3 completed successfully!")
+        print("Task 1-4 completed successfully!")
         print("\nNext tasks will implement:")
-        print("- Task 4: Reading YAML files")
         print("- Task 5-7: Reading/Writing XML files and format verification")
         print("- Task 8-9: UI implementation")
         

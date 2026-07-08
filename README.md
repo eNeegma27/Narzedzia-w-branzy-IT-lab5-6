@@ -56,7 +56,8 @@ python main.py input.xml result.yaml
 - ✅ Task 1: Argument parsing implemented
 - ✅ Task 2: JSON file reading and syntax validation
 - ✅ Task 3: JSON file writing and syntax verification
-- 🔄 Task 4-9: To be implemented
+- ✅ Task 4: YAML file reading and syntax validation
+- 🔄 Task 5-9: To be implemented
 
 ## How to Run
 

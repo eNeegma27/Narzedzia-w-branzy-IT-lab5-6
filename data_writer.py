@@ -6,11 +6,28 @@ Task 3: Writing data from object to JSON file with proper syntax.
 import json
 import os
 from pathlib import Path
+from datetime import date, datetime
 
 
 class DataWriterError(Exception):
     """Base exception for data writing errors."""
     pass
+
+
+def serialize_for_json(obj):
+    """
+    Custom JSON serializer for objects not serializable by default json code.
+    Handles date and datetime objects.
+    
+    Args:
+        obj: Object to serialize
+        
+    Returns:
+        str: ISO format string for dates, or raises TypeError
+    """
+    if isinstance(obj, (date, datetime)):
+        return obj.isoformat()
+    raise TypeError(f"Object of type {type(obj).__name__} is not JSON serializable")
 
 
 def write_json_file(file_path, data, indent=2):
@@ -41,13 +58,13 @@ def write_json_file(file_path, data, indent=2):
     
     try:
         with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=indent, ensure_ascii=False)
+            json.dump(data, f, indent=indent, ensure_ascii=False, default=serialize_for_json)
         return True
     except TypeError as e:
         raise DataWriterError(
             f"Cannot serialize data to JSON:\n"
             f"  {e}\n"
-            f"  Note: Only dict, list, str, int, float, bool, and None are JSON-serializable"
+            f"  Note: Only dict, list, str, int, float, bool, None, and date/datetime are JSON-serializable"
         )
     except Exception as e:
         raise DataWriterError(
@@ -63,7 +80,7 @@ def write_file(file_path, data, file_format):
     Args:
         file_path (str): Path to the output file
         data (dict or list): Python object to write
-        file_format (str): File format ('json', 'xml', 'yaml')
+        file_format (str): File format ('json', 'xml', 'yaml', 'yml')
         
     Returns:
         bool: True if write was successful
