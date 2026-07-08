@@ -7,6 +7,7 @@ Converts data between formats: .xml, .json, and .yaml
 
 import sys
 from arg_parser import parse_arguments, print_usage
+from data_reader import read_file, DataReaderError
 
 
 def main():
@@ -20,9 +21,24 @@ def main():
         print(f"Input file:  {args['input_file']} ({args['input_format'].upper()})")
         print(f"Output file: {args['output_file']} ({args['output_format'].upper()})")
         print("=" * 50)
-        print("\nTask 1 completed: Arguments parsed successfully!")
+        
+        # Read input file (Task 2)
+        print(f"\n[Task 2] Reading input file...")
+        try:
+            data = read_file(args['input_file'], args['input_format'])
+            print(f"✓ Successfully read JSON file")
+            print(f"  Data type: {type(data).__name__}")
+            if isinstance(data, dict):
+                print(f"  Keys: {len(data)} keys found")
+            elif isinstance(data, list):
+                print(f"  Items: {len(data)} items found")
+        except DataReaderError as e:
+            print(f"✗ Error reading file: {e}")
+            return 1
+        
+        print("\n" + "=" * 50)
+        print("Task 1-2 completed successfully!")
         print("\nNext tasks will implement:")
-        print("- Task 2: Reading data from input file")
         print("- Task 3: Converting between formats")
         print("- Task 4: Writing output to file")
         print("- Task 5-7: Format verification")
