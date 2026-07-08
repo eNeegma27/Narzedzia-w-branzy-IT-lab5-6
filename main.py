@@ -8,7 +8,7 @@ Converts data between formats: .xml, .json, and .yaml
 import sys
 from arg_parser import parse_arguments, print_usage
 from data_reader import read_file, DataReaderError
-from data_writer import write_file, DataWriterError, validate_json_syntax
+from data_writer import write_file, DataWriterError, validate_json_syntax, validate_yaml_syntax
 
 
 def main():
@@ -38,23 +38,28 @@ def main():
             print(f"✗ Error reading file: {e}")
             return 1
         
-        # Write output file (Task 3)
-        print(f"\n[Task 3] Writing output file...")
+        # Write output file (Task 3, Task 5)
+        print(f"\n[Task 3-5] Writing output file...")
         try:
             write_file(args['output_file'], data, args['output_format'])
-            print(f"✓ Successfully wrote data to JSON file")
+            format_name = args['output_format'].upper()
+            print(f"✓ Successfully wrote data to {format_name} file")
             
-            # Verify JSON syntax
-            validate_json_syntax(args['output_file'])
-            print(f"✓ Output JSON syntax verified")
+            # Verify syntax based on output format
+            if args['output_format'] == 'json':
+                validate_json_syntax(args['output_file'])
+            elif args['output_format'] in ('yaml', 'yml'):
+                validate_yaml_syntax(args['output_file'])
+            
+            print(f"✓ Output {format_name} syntax verified")
         except DataWriterError as e:
             print(f"✗ Error writing file: {e}")
             return 1
         
         print("\n" + "=" * 50)
-        print("Task 1-4 completed successfully!")
+        print("Task 1-5 completed successfully!")
         print("\nNext tasks will implement:")
-        print("- Task 5-7: Reading/Writing XML files and format verification")
+        print("- Task 6-7: Reading/Writing XML files and format verification")
         print("- Task 8-9: UI implementation")
         
         return 0

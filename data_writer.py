@@ -1,12 +1,14 @@
 """
 Data writer module for writing files in various formats.
 Task 3: Writing data from object to JSON file with proper syntax.
+Task 5: Writing data from object to YAML file with proper syntax.
 """
 
 import json
 import os
 from pathlib import Path
 from datetime import date, datetime
+import yaml
 
 
 class DataWriterError(Exception):
@@ -72,10 +74,45 @@ def write_json_file(file_path, data, indent=2):
         )
 
 
+def write_yaml_file(file_path, data):
+    """
+    Write data to a YAML file with proper formatting.
+    Task 5: Writing data from object to YAML file and verifying syntax.
+    
+    Args:
+        file_path (str): Path to the output YAML file
+        data (dict or list): Python object to write
+        
+    Returns:
+        bool: True if write was successful
+        
+    Raises:
+        DataWriterError: If file cannot be written
+    """
+    # Ensure the directory exists
+    directory = os.path.dirname(file_path)
+    if directory and not os.path.exists(directory):
+        try:
+            os.makedirs(directory, exist_ok=True)
+        except Exception as e:
+            raise DataWriterError(
+                f"Cannot create directory '{directory}':\n  {e}"
+            )
+    
+    try:
+        with open(file_path, 'w', encoding='utf-8') as f:
+            yaml.dump(data, f, default_flow_style=False, allow_unicode=True, sort_keys=False)
+        return True
+    except Exception as e:
+        raise DataWriterError(
+            f"Error writing YAML file '{file_path}':\n  {e}"
+        )
+
+
 def write_file(file_path, data, file_format):
     """
     Write file based on its format.
-    Currently supports JSON (Task 3).
+    Currently supports JSON (Task 3) and YAML (Task 5).
     
     Args:
         file_path (str): Path to the output file
@@ -90,10 +127,12 @@ def write_file(file_path, data, file_format):
     """
     if file_format == 'json':
         return write_json_file(file_path, data)
+    elif file_format in ('yaml', 'yml'):
+        return write_yaml_file(file_path, data)
     else:
         raise DataWriterError(
             f"Format '{file_format}' is not yet supported for writing.\n"
-            f"Currently supported: json"
+            f"Currently supported: json, yaml, yml"
         )
 
 
@@ -122,4 +161,32 @@ def validate_json_syntax(file_path):
     except Exception as e:
         raise DataWriterError(
             f"Cannot validate JSON file '{file_path}':\n  {e}"
+        )
+
+
+def validate_yaml_syntax(file_path):
+    """
+    Verify that a YAML file has valid syntax.
+    
+    Args:
+        file_path (str): Path to the YAML file to validate
+        
+    Returns:
+        bool: True if YAML is valid
+        
+    Raises:
+        DataWriterError: If YAML syntax is invalid
+    """
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            yaml.safe_load(f)
+        return True
+    except yaml.YAMLError as e:
+        raise DataWriterError(
+            f"Invalid YAML syntax in '{file_path}':\n"
+            f"  {e}"
+        )
+    except Exception as e:
+        raise DataWriterError(
+            f"Cannot validate YAML file '{file_path}':\n  {e}"
         )
