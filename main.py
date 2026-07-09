@@ -3,6 +3,11 @@ Data Format Converter
 Main program entry point.
 
 Converts data between formats: .xml, .json, and .yaml
+
+Usage:
+  python main.py <input_file> <output_file>          # Console mode
+  python main.py --ui                                  # PyQt5 GUI mode
+  python main.py --async <input_file> <output_file>   # Async console mode
 """
 
 import sys
@@ -13,6 +18,21 @@ from data_writer import write_file, DataWriterError, validate_json_syntax, valid
 
 def main():
     """Main program entry point."""
+    # Check for UI mode
+    if len(sys.argv) > 1 and sys.argv[1] == '--ui':
+        try:
+            from ui import run_ui
+            print("Launching PyQt5 GUI...")
+            run_ui()
+            return 0
+        except ImportError as e:
+            print(f"Error: PyQt5 not installed. Install it with: pip install PyQt5", file=sys.stderr)
+            return 1
+        except Exception as e:
+            print(f"Error launching UI: {e}", file=sys.stderr)
+            return 1
+    
+    # Console mode - use original argument parser
     try:
         # Parse and validate arguments (Task 1)
         args = parse_arguments()
@@ -28,14 +48,14 @@ def main():
         try:
             data = read_file(args['input_file'], args['input_format'])
             format_name = args['input_format'].upper()
-            print(f"✓ Successfully read {format_name} file")
+            print(f"[OK] Successfully read {format_name} file")
             print(f"  Data type: {type(data).__name__}")
             if isinstance(data, dict):
                 print(f"  Keys: {len(data)} keys found")
             elif isinstance(data, list):
                 print(f"  Items: {len(data)} items found")
         except DataReaderError as e:
-            print(f"✗ Error reading file: {e}")
+            print(f"[ERROR] Error reading file: {e}")
             return 1
         
         # Write output file (Task 3, Task 5, Task 7)
@@ -43,7 +63,7 @@ def main():
         try:
             write_file(args['output_file'], data, args['output_format'])
             format_name = args['output_format'].upper()
-            print(f"✓ Successfully wrote data to {format_name} file")
+            print(f"[OK] Successfully wrote data to {format_name} file")
             
             # Verify syntax based on output format
             if args['output_format'] == 'json':
@@ -53,9 +73,9 @@ def main():
             elif args['output_format'] == 'xml':
                 validate_xml_syntax(args['output_file'])
             
-            print(f"✓ Output {format_name} syntax verified")
+            print(f"[OK] Output {format_name} syntax verified")
         except DataWriterError as e:
-            print(f"✗ Error writing file: {e}")
+            print(f"[ERROR] Error writing file: {e}")
             return 1
         
         print("\n" + "=" * 50)
