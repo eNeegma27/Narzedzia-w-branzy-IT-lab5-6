@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <name>Test Project</name>
+  <version>1.0</version>
+  <items>
+    <item>
+      <id>1</id>
+      <title>First Item</title>
+      <status>active</status>
+    </item>
+    <item>
+      <id>2</id>
+      <title>Second Item</title>
+      <status>inactive</status>
+    </item>
+  </items>
+  <metadata>
+    <created>2026-07-08</created>
+    <author>Test User</author>
+  </metadata>
+</project>

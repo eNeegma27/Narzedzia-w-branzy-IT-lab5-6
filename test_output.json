@@ -1,0 +1,24 @@
+{
+  "project": {
+    "name": "Test Project",
+    "version": "1.0",
+    "items": {
+      "item": [
+        {
+          "id": "1",
+          "title": "First Item",
+          "status": "active"
+        },
+        {
+          "id": "2",
+          "title": "Second Item",
+          "status": "inactive"
+        }
+      ]
+    },
+    "metadata": {
+      "created": "2026-07-08",
+      "author": "Test User"
+    }
+  }
+}
